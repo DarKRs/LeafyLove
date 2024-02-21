@@ -39,9 +39,9 @@ namespace LeafyLove.ViewModels
         public ICommand TreatCommand { get; private set; }
         public ICommand OpenStoreCommand { get; private set; }
 
-        public PlantViewModel()
+        public PlantViewModel(string plantName)
         {
-            Plant = new Plant("Ваше растение");
+            Plant = new Plant(plantName);
 
             // Инициализация команд
             WaterCommand = new RelayCommand(o => WaterPlant(), o => Plant.WaterLevel < 200 && canWater);
