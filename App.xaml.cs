@@ -1,6 +1,7 @@
 ﻿using LeafyLove.Domain.Models;
 using LeafyLove.ViewModels;
 using LeafyLove.Views;
+using LeafyLove.Properties;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,28 +21,29 @@ namespace LeafyLove
         {
             base.OnStartup(e);
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            StartDialog dialog = new StartDialog();
-            if (dialog.ShowDialog() == true)
+
+            if (Settings.Default.FirstRun)
             {
-                // Создание растения с именем из диалогового окна
-                var plantName = dialog.PlantName;
-
-                // Создайте ViewModel с полученным именем растения
-                var viewModel = new PlantViewModel(plantName);
-
-                // Создайте и покажите MainWindow, передав ViewModel через DataContext
-                var mainWindow = new MainWindow
+                StartDialog dialog = new StartDialog();
+                if (dialog.ShowDialog() == true)
                 {
-                    DataContext = viewModel
-                };
-                this.ShutdownMode = ShutdownMode.OnLastWindowClose;
-                mainWindow.Show();
+                    // Сохранение имени растения для последующих запусков
+                    Settings.Default.PlantName = dialog.PlantName;
+                    Settings.Default.FirstRun = false;
+                    Settings.Default.Save();
+                }
+                else
+                {
+                    Shutdown();
+                    return;
+                }
             }
-            else
-            {
-                // Пользователь закрыл диалоговое окно без ввода имени, можно закрыть приложение или обработать иначе
-                this.Shutdown();
-            }
+
+            string plantName = Settings.Default.PlantName;
+            var viewModel = new PlantViewModel(plantName);
+            var mainWindow = new MainWindow { DataContext = viewModel };
+            this.ShutdownMode = ShutdownMode.OnLastWindowClose;
+            mainWindow.Show();
         }
     }
 }
