@@ -13,7 +13,10 @@ namespace LeafyLove.ViewModels
 {
     public class PlantViewModel : INotifyPropertyChanged
     {
+        private DispatcherTimer tickTimer;
         private DispatcherTimer growthTimer;
+
+        Random random = new Random();
 
         private Plant plant;
 
@@ -38,21 +41,33 @@ namespace LeafyLove.ViewModels
             Plant = new Plant("Ваше растение");
 
             // Инициализация команд
-            WaterCommand = new RelayCommand(o => Plant.Water(), o => Plant.Health < 100);
+            WaterCommand = new RelayCommand(o => Plant.Water(), o => Plant.WaterLevel < 200);
             FertilizeCommand = new RelayCommand(o => Plant.Fertilize());
             TreatCommand = new RelayCommand(o => Plant.RemovePests(), o => Plant.HasPests);
 
-            // Настройка таймера для роста растения
+            // Настройка таймера для тика растения
             growthTimer = new DispatcherTimer();
-            growthTimer.Interval = TimeSpan.FromSeconds(1);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
+            growthTimer.Interval = TimeSpan.FromSeconds(5);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
             growthTimer.Tick += GrowthTimer_Tick;
             growthTimer.Start();
+
+            // Настройка таймера для тика растения
+            tickTimer = new DispatcherTimer();
+            tickTimer.Interval = TimeSpan.FromSeconds(3);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
+            tickTimer.Tick += TickTimer_Tick;
+            tickTimer.Start();
         }
 
         private void GrowthTimer_Tick(object sender, EventArgs e)
         {
             Plant.Grow();
-            Plant.CheckPests(); // Проверьте наличие вредителей при каждом тике таймера
+            Plant.CheckPests(random.Next(100) < 5);
+        }
+
+        private void TickTimer_Tick(object sender, EventArgs e)
+        {
+            Plant.Tick(random.Next(10));
+
         }
 
         protected void OnPropertyChanged(string name)
