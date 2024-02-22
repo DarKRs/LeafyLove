@@ -88,7 +88,6 @@ namespace LeafyLove.Domain.Models
 
         public void Water()
         {
-            // Полив увеличивает здоровье растения
             WaterLevel = Math.Min(WaterLevel + 15, MaxWaterLevel);
         }
 

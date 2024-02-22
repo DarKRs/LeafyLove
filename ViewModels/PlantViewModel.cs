@@ -1,4 +1,5 @@
 ﻿using LeafyLove.Domain.Models;
+using LeafyLove.Models;
 using LeafyLove.Utilities;
 using System;
 using System.Collections.Generic;
@@ -21,17 +22,40 @@ namespace LeafyLove.ViewModels
 
         Random random = new Random();
 
-        private Plant plant;
-
-        public Plant Plant
+        private User user;
+        public User User
         {
-            get { return plant; }
+            get { return user; }
             set
             {
-                plant = value;
-                OnPropertyChanged(nameof(Plant));
+                user = value;
+                OnPropertyChanged(nameof(User));
             }
         }
+
+        private Plant selectedPlant;
+        public Plant SelectedPlant
+        {
+            get { return selectedPlant; }
+            set
+            {
+                selectedPlant = value;
+                OnPropertyChanged(nameof(SelectedPlant));
+                // Обновите состояние команд в зависимости от выбранного растения
+            }
+        }
+
+        /* private Plant plant;
+
+         public Plant Plant
+         {
+             get { return plant; }
+             set
+             {
+                 plant = value;
+                 OnPropertyChanged(nameof(Plant));
+             }
+         }*/
 
         // Команды для действий пользователя
         public ICommand WaterCommand { get; private set; }
@@ -41,12 +65,22 @@ namespace LeafyLove.ViewModels
 
         public PlantViewModel(string plantName)
         {
-            Plant = new Plant(plantName);
+            User = new User("Имя пользователя"); // Инициализируйте пользователя здесь
+            User.AddPlant(new Plant(plantName));
+            User.AddPlant(new Plant("Тест2"));
+            User.AddPlant(new Plant("Тест3"));
+            User.AddPlant(new Plant(plantName));
+            User.AddPlant(new Plant(plantName));
+            User.AddPlant(new Plant(plantName));
+            User.AddPlant(new Plant(plantName));
+            User.AddPlant(new Plant(plantName));
+            SelectedPlant = User.Plants.First();
+            // Plant = new Plant(plantName);
 
             // Инициализация команд
-            WaterCommand = new RelayCommand(o => WaterPlant(), o => Plant.WaterLevel < 200 && canWater);
-            FertilizeCommand = new RelayCommand(o => Plant.Fertilize());
-            TreatCommand = new RelayCommand(o => Plant.RemovePests(), o => Plant.HasPests);
+            WaterCommand = new RelayCommand(o => WaterPlant(), o => SelectedPlant.WaterLevel < 200 && canWater);
+            FertilizeCommand = new RelayCommand(o => SelectedPlant.Fertilize());
+            TreatCommand = new RelayCommand(o => SelectedPlant.RemovePests(), o => SelectedPlant.HasPests);
 
             // Настройка таймера для роста растения
             growthTimer = new DispatcherTimer();
@@ -68,14 +102,21 @@ namespace LeafyLove.ViewModels
 
         private void GrowthTimer_Tick(object sender, EventArgs e)
         {
-            Plant.Grow();
-            Plant.CheckPests(random.Next(100) < 5);
+            foreach (var plant in User.Plants)
+            {
+                plant.Grow();
+                plant.CheckPests(random.Next(100) < 5);
+            }
+            OnPropertyChanged(nameof(User.Plants));
         }
 
         private void TickTimer_Tick(object sender, EventArgs e)
         {
-            Plant.Tick(random.Next(10));
-
+            foreach (var plant in User.Plants)
+            {
+                plant.Tick(random.Next(10)); 
+            }
+            OnPropertyChanged(nameof(User.Plants));
         }
 
         private void WaterTimer_Tick(object sender, EventArgs e)
@@ -88,12 +129,9 @@ namespace LeafyLove.ViewModels
 
         private void WaterPlant()
         {
-            if (canWater)
-            {
-                Plant.Water();
-                canWater = false; // Блокируем возможность повторного полива
-                waterTimer.Start(); // Запускаем таймер задержки
-            }
+            SelectedPlant.Water();
+            canWater = false; // Блокируем возможность повторного полива
+            waterTimer.Start(); // Запускаем таймер задержки
         }
 
         protected void OnPropertyChanged(string name)

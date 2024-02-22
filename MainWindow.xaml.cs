@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LeafyLove.Domain.Models;
+using LeafyLove.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +26,29 @@ namespace LeafyLove
         {
             InitializeComponent();
         }
+
+        private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is StackPanel panel && panel.DataContext is Plant plant)
+            {
+                panel.Style = (Style)FindResource("HighlightStyle");
+                // Предполагая, что у вас есть доступ к ViewModel через DataContext или через другой механизм
+                var viewModel = this.DataContext as PlantViewModel;
+                viewModel.SelectedPlant = plant;
+            }
+        }
+
+        private void StackPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is StackPanel panel && panel.DataContext is Plant plant)
+            {
+                panel.Style = null;
+                // Предполагая, что у вас есть доступ к ViewModel через DataContext или через другой механизм
+                var viewModel = this.DataContext as PlantViewModel;
+                viewModel.SelectedPlant = null;
+            }
+        }
     }
+
+
 }

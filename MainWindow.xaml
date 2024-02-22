@@ -3,32 +3,43 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:LeafyLove.ViewModels"
         Title="Виртуальное растение" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Window.Resources>
+        <Style x:Key="HighlightStyle" TargetType="StackPanel">
+            <Setter Property="Background" Value="LightGray"/>
+            <!-- Другие свойства для подсветки -->
+        </Style>
+    </Window.Resources>
+    <TabControl>
+        <!-- Вкладка с растениями -->
+        <TabItem Header="Главная">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl  HorizontalAlignment="Stretch" ItemsSource="{Binding User.Plants}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                            <!-- Элементы будут упорядочены слева направо и перенесены на новую строку при необходимости -->
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel MinWidth="170" MinHeight="220"  Orientation="Vertical" Margin="10" MouseEnter="StackPanel_MouseEnter" MouseLeave="StackPanel_MouseLeave">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14"/>
+                                <Image Source="{Binding ImagePath}" Width="100" Height="100"/>
+                                <ProgressBar Value="{Binding Health}" Maximum="100" Width="100"/>
+                                <ProgressBar Value="{Binding WaterLevel}" Maximum="200" Width="100"/>
+                                <Button Content="Полить" Command="{Binding WaterCommand}" Margin="2" VerticalAlignment="Bottom" />
+                                <Button Content="Удобрить" Command="{Binding FertilizeCommand}" Margin="2" VerticalAlignment="Bottom"/>
+                                <Button Content="Лечить" Command="{Binding TreatCommand}" Margin="2" VerticalAlignment="Bottom"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </TabItem>
 
-        <!-- Заголовок -->
-        <TextBlock Grid.Row="0" Text="Виртуальное растение" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
-
-        <!-- Основной контент -->
-        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Plant.Name}" FontSize="20" FontWeight="SemiBold" Margin="5"/>
-            <TextBlock Text="{Binding Plant.Stage}" FontSize="16" Margin="5"/>
-            <TextBlock Text="{Binding Plant.Height}" FontSize="16" Margin="5"/>
-            <ProgressBar Value="{Binding Plant.Health}" Maximum="100" Width="200" Height="20" Margin="10"/>
-            <ProgressBar Value="{Binding Plant.WaterLevel}" Maximum="200" Width="200" Height="20" Margin="10"/>
-            <TextBlock Text="Здоровье растения" FontSize="14" Margin="5"/>
-        </StackPanel>
-
-        <!-- Панель управления -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Полить" Command="{Binding WaterCommand}" Margin="5"/>
-            <Button Content="Удобрить" Command="{Binding FertilizeCommand}" Margin="5"/>
-            <Button Content="Лечить" Command="{Binding TreatCommand}" Margin="5"/>
-            <Button Content="Магазин" Command="{Binding OpenStoreCommand}" Margin="5"/>
-        </StackPanel>
-    </Grid>
+        <!-- Вкладка магазина -->
+        <TabItem Header="Магазин">
+            <!-- Содержимое магазина -->
+        </TabItem>
+    </TabControl>
 </Window>
