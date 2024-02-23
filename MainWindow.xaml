@@ -38,7 +38,25 @@
                                             MouseEnter="StackPanel_MouseEnter" MouseLeave="StackPanel_MouseLeave">
                                     <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="5" HorizontalAlignment="Center"/>
 
-                                    <Image Source="{Binding ImagePath}" Width="120" Height="120" Margin="10" HorizontalAlignment="Center"/>
+                                    <Image Width="160" Height="120">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Seed.png"/>
+                                                <!-- Путь по умолчанию -->
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Stage}" Value="Seed">
+                                                        <Setter Property="Source" Value="pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Seed.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Stage}" Value="Sprout">
+                                                        <Setter Property="Source" Value="pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Sprout.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Stage}" Value="Mature">
+                                                        <Setter Property="Source" Value="pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Mature.png"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
 
                                     <StackPanel Margin="5">
                                         <TextBlock Text="Здоровье" FontSize="12" Margin="2"/>
