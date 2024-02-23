@@ -59,6 +59,7 @@
     <Compile Include="Models\Store.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Compile Include="Utilities\TimeOfDayToBackgroundConverter.cs" />
     <Compile Include="ViewModels\PlantViewModel.cs" />
     <Compile Include="Views\StartDialog.xaml.cs">
       <DependentUpon>StartDialog.xaml</DependentUpon>
@@ -110,7 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Icons\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Backgrounds\Day.png" />

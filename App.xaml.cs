@@ -42,6 +42,7 @@ namespace LeafyLove
             string plantName = Settings.Default.PlantName;
             var viewModel = new PlantViewModel(plantName);
             var mainWindow = new MainWindow { DataContext = viewModel };
+
             this.ShutdownMode = ShutdownMode.OnLastWindowClose;
             mainWindow.Show();
         }

@@ -1,4 +1,5 @@
 ﻿using LeafyLove.Domain.Models;
+using LeafyLove.Utilities;
 using LeafyLove.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace LeafyLove
 {
@@ -22,9 +24,14 @@ namespace LeafyLove
     /// </summary>
     public partial class MainWindow : Window
     {
+        private DispatcherTimer backgroundUpdateTimer;
+        
+
+
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void StackPanel_MouseEnter(object sender, MouseEventArgs e)
@@ -48,6 +55,8 @@ namespace LeafyLove
                 viewModel.SelectedPlant = null;
             }
         }
+
+
     }
 
 

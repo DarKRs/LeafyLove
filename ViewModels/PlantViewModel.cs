@@ -16,9 +16,12 @@ namespace LeafyLove.ViewModels
     {
         private bool canWater = true; // Изначально полив доступен
 
+        private TimeOfDayToBackgroundConverter converter = new TimeOfDayToBackgroundConverter();
+
         private DispatcherTimer tickTimer;
         private DispatcherTimer growthTimer;
         private DispatcherTimer waterTimer;
+        private DispatcherTimer backgroundUpdateTimer;
 
         Random random = new Random();
 
@@ -41,21 +44,22 @@ namespace LeafyLove.ViewModels
             {
                 selectedPlant = value;
                 OnPropertyChanged(nameof(SelectedPlant));
-                // Обновите состояние команд в зависимости от выбранного растения
             }
         }
 
-        /* private Plant plant;
-
-         public Plant Plant
-         {
-             get { return plant; }
-             set
-             {
-                 plant = value;
-                 OnPropertyChanged(nameof(Plant));
-             }
-         }*/
+        private string currentBackground;
+        public string CurrentBackground
+        {
+            get => currentBackground;
+            set
+            {
+                if (currentBackground != value)
+                {
+                    currentBackground = value;
+                    OnPropertyChanged(nameof(CurrentBackground)); 
+                }
+            }
+        }
 
         // Команды для действий пользователя
         public ICommand WaterCommand { get; private set; }
@@ -75,7 +79,7 @@ namespace LeafyLove.ViewModels
             User.AddPlant(new Plant(plantName));
             User.AddPlant(new Plant(plantName));
             SelectedPlant = User.Plants.First();
-            // Plant = new Plant(plantName);
+            UpdateBackground();
 
             // Инициализация команд
             WaterCommand = new RelayCommand(_ => WaterPlant(), _ => canWater);
@@ -84,7 +88,7 @@ namespace LeafyLove.ViewModels
 
             // Настройка таймера для роста растения
             growthTimer = new DispatcherTimer();
-            growthTimer.Interval = TimeSpan.FromSeconds(20);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
+            growthTimer.Interval = TimeSpan.FromSeconds(1);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
             growthTimer.Tick += GrowthTimer_Tick;
             growthTimer.Start();
 
@@ -96,8 +100,16 @@ namespace LeafyLove.ViewModels
 
             // Настройка таймера задержки полива
             waterTimer = new DispatcherTimer();
-            waterTimer.Interval = TimeSpan.FromSeconds(5); // Задержка 30 секунд между поливами
+            waterTimer.Interval = TimeSpan.FromSeconds(3);
             waterTimer.Tick += WaterTimer_Tick;
+
+            //Таймер фона
+            backgroundUpdateTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromHours(1) // Обновление каждую минуту
+            };
+            backgroundUpdateTimer.Tick += (s, e) => UpdateBackground();
+            backgroundUpdateTimer.Start();
         }
 
         private void GrowthTimer_Tick(object sender, EventArgs e)
@@ -129,13 +141,6 @@ namespace LeafyLove.ViewModels
 
         private void WaterPlant()
         {
-            SelectedPlant.Water();
-            canWater = false; // Блокируем возможность повторного полива
-            waterTimer.Start(); // Запускаем таймер задержки
-        }*/
-
-        private void WaterPlant()
-        {
             if (SelectedPlant != null)
             {
                 SelectedPlant.Water();
@@ -163,6 +168,11 @@ namespace LeafyLove.ViewModels
         private void TreatPlant()
         {
             SelectedPlant?.RemovePests();
+        }
+
+        private void UpdateBackground()
+        {
+            CurrentBackground = converter.Convert(null, null, null, null) as string;
         }
 
         protected void OnPropertyChanged(string name)
