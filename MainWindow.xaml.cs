@@ -38,8 +38,6 @@ namespace LeafyLove
         {
             if (sender is StackPanel panel && panel.DataContext is Plant plant)
             {
-                panel.Style = (Style)FindResource("HighlightStyle");
-                // Предполагая, что у вас есть доступ к ViewModel через DataContext или через другой механизм
                 var viewModel = this.DataContext as PlantViewModel;
                 viewModel.SelectedPlant = plant;
             }
@@ -49,8 +47,6 @@ namespace LeafyLove
         {
             if (sender is StackPanel panel && panel.DataContext is Plant plant)
             {
-                panel.Style = null;
-                // Предполагая, что у вас есть доступ к ViewModel через DataContext или через другой механизм
                 var viewModel = this.DataContext as PlantViewModel;
                 viewModel.SelectedPlant = null;
             }

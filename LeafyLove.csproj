@@ -118,15 +118,9 @@
     <Resource Include="Resources\Backgrounds\Night.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\Plants\Mature.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Plants\Seed.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Plants\Sprout.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\Images\Plants\Mature.png" />
+    <Resource Include="Resources\Images\Plants\Seed.png" />
+    <Resource Include="Resources\Images\Plants\Sprout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

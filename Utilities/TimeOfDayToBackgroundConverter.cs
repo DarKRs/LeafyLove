@@ -16,7 +16,7 @@ namespace LeafyLove.Utilities
 
             if (now.Hour >= 6 && now.Hour < 12)
                 return "pack://application:,,,/LeafyLove;component/Resources/Backgrounds/Morning.png"; // Путь к изображению для утра
-            else if (now.Hour >= 12 && now.Hour < 18)
+            else if (now.Hour >= 12 && now.Hour < 19)
                 return "pack://application:,,,/LeafyLove;component/Resources/Backgrounds/Day.png"; // Путь к изображению для дня
             else
                 return "pack://application:,,,/LeafyLove;component/Resources/Backgrounds/Night.png";  // Путь к изображению для вечера
