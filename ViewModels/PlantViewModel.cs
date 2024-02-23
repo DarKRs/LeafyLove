@@ -78,9 +78,9 @@ namespace LeafyLove.ViewModels
             // Plant = new Plant(plantName);
 
             // Инициализация команд
-            WaterCommand = new RelayCommand(o => WaterPlant(), o => SelectedPlant.WaterLevel < 200 && canWater);
-            FertilizeCommand = new RelayCommand(o => SelectedPlant.Fertilize());
-            TreatCommand = new RelayCommand(o => SelectedPlant.RemovePests(), o => SelectedPlant.HasPests);
+            WaterCommand = new RelayCommand(_ => WaterPlant(), _ => canWater);
+            FertilizeCommand = new RelayCommand(_ => FertilizePlant(), _ => CanFertilizePlant());
+            TreatCommand = new RelayCommand(_ => TreatPlant(), _ => CanTreatPlant());
 
             // Настройка таймера для роста растения
             growthTimer = new DispatcherTimer();
@@ -132,6 +132,37 @@ namespace LeafyLove.ViewModels
             SelectedPlant.Water();
             canWater = false; // Блокируем возможность повторного полива
             waterTimer.Start(); // Запускаем таймер задержки
+        }*/
+
+        private void WaterPlant()
+        {
+            if (SelectedPlant != null)
+            {
+                SelectedPlant.Water();
+                canWater = false;
+                waterTimer.Start();
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        private bool CanFertilizePlant()
+        {
+            return SelectedPlant != null;
+        }
+
+        private void FertilizePlant()
+        {
+            SelectedPlant?.Fertilize();
+        }
+
+        private bool CanTreatPlant()
+        {
+            return SelectedPlant != null && SelectedPlant.HasPests;
+        }
+
+        private void TreatPlant()
+        {
+            SelectedPlant?.RemovePests();
         }
 
         protected void OnPropertyChanged(string name)
