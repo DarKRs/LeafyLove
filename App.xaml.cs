@@ -79,5 +79,38 @@ namespace LeafyLove
             base.OnExit(e);
             SaveUserData(mainUser); // Убедитесь, что у вас есть доступ к текущему пользователю
         }
+
+        public void ResetUserAndReloadUI()
+        {
+            Settings.Default.FirstRun = true;
+            Settings.Default.PlantName = "";
+
+            Current.MainWindow.Hide();
+            StartDialog dialog = new StartDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                // Сохранение имени растения для последующих запусков
+                Settings.Default.PlantName = dialog.PlantName;
+                Settings.Default.FirstRun = false;
+                Settings.Default.Save();
+            }
+            else
+            {
+                Shutdown();
+                return;
+            }
+
+            string plantName = Settings.Default.PlantName;
+
+            mainUser = new User(plantName); 
+            SaveUserData(mainUser);
+
+
+            var mainWindow = new MainWindow(mainUser);
+            Current.MainWindow.Close();
+            Current.MainWindow = mainWindow; 
+            mainWindow.Show();
+        }
+
     }
 }

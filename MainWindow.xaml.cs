@@ -57,6 +57,17 @@ namespace LeafyLove
             }
         }
 
+        private void ResetProgress_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите сбросить весь прогресс?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // Вызов метода сброса и перезагрузки UI
+                ((App)Application.Current).ResetUserAndReloadUI();
+            }
+        }
+
 
     }
 

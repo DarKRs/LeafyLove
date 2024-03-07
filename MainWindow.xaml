@@ -37,157 +37,164 @@
 
         <utilities:TimeOfDayToBackgroundConverter x:Key="TimeOfDayToBackgroundConverter"/>
     </Window.Resources>
-    <TabControl>
-        <TabControl.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#FFD3E4F4" Offset="0"/>
-                <GradientStop Color="#FFA6BCD0" Offset="1"/>
-            </LinearGradientBrush>
-        </TabControl.Background>
-        <!-- Вкладка с растениями -->
-        <TabItem x:Name="MainTab" Header="Главная">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl ItemsSource="{Binding User.Plants}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="4"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="{StaticResource PanelBorderBrush}" 
+    <StackPanel>
+        <Menu VerticalAlignment="Top">
+            <MenuItem Header="_Файл">
+                <MenuItem Header="_Сбросить прогресс" Click="ResetProgress_Click"/>
+            </MenuItem>
+        </Menu>
+        <TabControl>
+            <TabControl.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFD3E4F4" Offset="0"/>
+                    <GradientStop Color="#FFA6BCD0" Offset="1"/>
+                </LinearGradientBrush>
+            </TabControl.Background>
+            <!-- Вкладка с растениями -->
+            <TabItem x:Name="MainTab" Header="Главная">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding User.Plants}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource PanelBorderBrush}" 
                             BorderThickness="1"
                             Margin="8,4,0,0"
                             CornerRadius="5"
                             MaxHeight="600">
-                                <!-- Фон для каждого растения -->
-                                <Border.Background>
-                                    <ImageBrush ImageSource="{Binding DataContext.CurrentBackground, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                    <!-- Фон для каждого растения -->
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding DataContext.CurrentBackground, RelativeSource={RelativeSource AncestorType=Window}}" 
                                         Stretch="UniformToFill" 
                                         AlignmentX="Center" 
                                         AlignmentY="Center"/>
-                                </Border.Background>
-                                <Grid>
-                                    <StackPanel MinWidth="300" MinHeight="600" Orientation="Vertical" VerticalAlignment="Stretch" MouseEnter="StackPanel_MouseEnter" MouseLeave="StackPanel_MouseLeave">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#55FFFFFF" />
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
+                                    </Border.Background>
+                                    <Grid>
+                                        <StackPanel MinWidth="300" MinHeight="600" Orientation="Vertical" VerticalAlignment="Stretch" MouseEnter="StackPanel_MouseEnter" MouseLeave="StackPanel_MouseLeave">
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#55FFFFFF" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
 
-                                        <!-- Название растения -->
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="5" HorizontalAlignment="Center"/>
+                                            <!-- Название растения -->
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16" Margin="5" HorizontalAlignment="Center"/>
 
-                                        <!-- Изображение растения -->
-                                        <Image Width="300" Height="180" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,240,0,0" Source="{Binding ImagePath}">
-                                            <Image.Triggers>
-                                                <EventTrigger RoutedEvent="Image.Loaded">
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <!-- Анимация высоты -->
-                                                            <DoubleAnimation Storyboard.TargetProperty="Height"
+                                            <!-- Изображение растения -->
+                                            <Image Width="300" Height="180" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,240,0,0" Source="{Binding ImagePath}">
+                                                <Image.Triggers>
+                                                    <EventTrigger RoutedEvent="Image.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <!-- Анимация высоты -->
+                                                                <DoubleAnimation Storyboard.TargetProperty="Height"
                                      From="50" To="180" Duration="0:0:5" />
-                                                            <!-- Анимация ширины, если необходимо -->
-                                                            <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                <!-- Анимация ширины, если необходимо -->
+                                                                <DoubleAnimation Storyboard.TargetProperty="Width"
                                      From="50" To="300" Duration="0:0:5" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </EventTrigger>
-                                            </Image.Triggers>
-                                        </Image>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </Image.Triggers>
+                                            </Image>
 
 
-                                        <!-- Индикаторы здоровья и уровня воды -->
-                                        <StackPanel Margin="3">
-                                            <TextBlock Text="Здоровье" FontSize="12" FontWeight="Bold"/>
-                                            <ProgressBar Value="{Binding Health}" Style="{StaticResource ProgressBarStyle}" Maximum="100"/>
+                                            <!-- Индикаторы здоровья и уровня воды -->
+                                            <StackPanel Margin="3">
+                                                <TextBlock Text="Здоровье" FontSize="12" FontWeight="Bold"/>
+                                                <ProgressBar Value="{Binding Health}" Style="{StaticResource ProgressBarStyle}" Maximum="100"/>
 
-                                            <TextBlock Text="Уровень воды" FontSize="12" FontWeight="Bold"/>
-                                            <ProgressBar Value="{Binding WaterLevel}" Style="{StaticResource ProgressBarStyle}" Maximum="100"/>
+                                                <TextBlock Text="Уровень воды" FontSize="12" FontWeight="Bold"/>
+                                                <ProgressBar Value="{Binding WaterLevel}" Style="{StaticResource ProgressBarStyle}" Maximum="100"/>
+                                            </StackPanel>
+
+                                            <!-- Кнопки взаимодействия -->
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                                                <Button Content="Полить" Command="{Binding DataContext.WaterCommand, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource ActionButtonStyle}"/>
+                                                <Button Content="Удобрить" Command="{Binding DataContext.FertilizeCommand, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource ActionButtonStyle}"/>
+                                                <Button Content="Лечить" Command="{Binding DataContext.TreatCommand, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource ActionButtonStyle}"/>
+                                            </StackPanel>
+
                                         </StackPanel>
 
-                                        <!-- Кнопки взаимодействия -->
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                                            <Button Content="Полить" Command="{Binding DataContext.WaterCommand, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource ActionButtonStyle}"/>
-                                            <Button Content="Удобрить" Command="{Binding DataContext.FertilizeCommand, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource ActionButtonStyle}"/>
-                                            <Button Content="Лечить" Command="{Binding DataContext.TreatCommand, RelativeSource={RelativeSource AncestorType=Window}}" Style="{StaticResource ActionButtonStyle}"/>
-                                        </StackPanel>
 
-                                    </StackPanel>
-                                    
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
 
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </TabItem>
-
-        <!-- Вкладка магазина -->
-        <TabItem x:Name="StoreTab" Header="Магазин">
-            <Grid>
-                <TextBlock Text="{Binding MainUser.Money, StringFormat='Баланс: {0}'}" 
+            <!-- Вкладка магазина -->
+            <TabItem x:Name="StoreTab" Header="Магазин">
+                <Grid>
+                    <TextBlock Text="{Binding MainUser.Money, StringFormat='Баланс: {0}'}" 
                    FontSize="16" FontWeight="Bold" 
                    HorizontalAlignment="Right" VerticalAlignment="Top" 
                    Margin="2" />
-                
-                <TabControl>
-                    <!-- Вкладка с цветами -->
-                    <TabItem Header="Цветы">
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <ItemsControl ItemsSource="{Binding FlowerItems}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="4"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" MaxHeight="300" VerticalAlignment="Top">
-                                            <StackPanel>
-                                                <Image Source="{Binding ImagePath}" Height="100" Width="300" />
-                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="5"/>
-                                                <TextBlock Text="{Binding Price, StringFormat='Цена: {0}'}" FontSize="12" Margin="5"/>
-                                                <Button Content="Купить" Command="{Binding DataContext.PurchaseCommand, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" CommandParameter="{Binding}" Margin="5"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </TabItem>
 
-                    <!-- Вкладка с инструментами -->
-                    <TabItem Header="Инструменты">
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <ItemsControl ItemsSource="{Binding ToolItems}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="4"/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" MaxHeight="180" VerticalAlignment="Top">
-                                            <StackPanel>
-                                                <Image Source="{Binding ImagePath}" Height="100" Width="100" />
-                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="5"/>
-                                                <TextBlock Text="{Binding Price, StringFormat='Цена: {0}'}" FontSize="12" Margin="5"/>
-                                                <Button Content="Купить" Command="{Binding DataContext.PurchaseCommand, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" CommandParameter="{Binding}" Margin="5"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </TabItem>
-                </TabControl>
-            </Grid>
-        </TabItem>
-    </TabControl>
+                    <TabControl>
+                        <!-- Вкладка с цветами -->
+                        <TabItem Header="Цветы">
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding FlowerItems}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="4"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" MaxHeight="300" VerticalAlignment="Top">
+                                                <StackPanel>
+                                                    <Image Source="{Binding ImagePath}" Height="100" Width="300" />
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="5"/>
+                                                    <TextBlock Text="{Binding Price, StringFormat='Цена: {0}'}" FontSize="12" Margin="5"/>
+                                                    <Button Content="Купить" Command="{Binding DataContext.PurchaseCommand, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" CommandParameter="{Binding}" Margin="5"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Вкладка с инструментами -->
+                        <TabItem Header="Инструменты">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding ToolItems}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="4"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Padding="10" Margin="5" MaxHeight="180" VerticalAlignment="Top">
+                                                <StackPanel>
+                                                    <Image Source="{Binding ImagePath}" Height="100" Width="100" />
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="5"/>
+                                                    <TextBlock Text="{Binding Price, StringFormat='Цена: {0}'}" FontSize="12" Margin="5"/>
+                                                    <Button Content="Купить" Command="{Binding DataContext.PurchaseCommand, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" CommandParameter="{Binding}" Margin="5"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
 </Window>

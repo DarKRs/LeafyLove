@@ -173,5 +173,10 @@
     <Resource Include="Resources\Images\Plants\Lego\LegoSeed.png" />
     <Resource Include="Resources\Images\Plants\Lego\LegoSprout.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Plants\Lilies\LiliesMature.png" />
+    <Resource Include="Resources\Images\Plants\Lilies\LiliesSeed.png" />
+    <Resource Include="Resources\Images\Plants\Lilies\LiliesSprout.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
