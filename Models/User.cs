@@ -28,21 +28,18 @@ namespace LeafyLove.Models
             }
         }
 
-        // Убедитесь, что для всех коллекций установлены публичные сеттеры
         public ObservableCollection<Plant> Plants { get; set; }
-        public List<StoreItem> Inventory { get; set; }
+        public ObservableCollection<StoreItem> Inventory { get; private set; }
         public string FirstPlantName { get; set; }
 
-        // Добавьте конструктор без параметров
         public User()
         {
-            // Инициализируйте коллекции здесь, чтобы избежать NullReferenceException при десериализации
             Plants = new ObservableCollection<Plant>();
-            Inventory = new List<StoreItem>();
+            Inventory = new ObservableCollection<StoreItem>();
         }
 
-        // Оставьте параметризованный конструктор, если он вам нужен для других целей
-        public User(string plantName) : this() // Вызовите конструктор без параметров для инициализации коллекций
+
+        public User(string plantName) : this() 
         {
             Name = "test";
             Money = 500; // Начальное количество денег
@@ -53,6 +50,36 @@ namespace LeafyLove.Models
         public void AddPlant(Plant plant)
         {
             Plants.Add(plant);
+        }
+
+        public void AddToInventory(StoreItem item)
+        {
+            Inventory.Add(item);
+            OnPropertyChanged(nameof(Inventory));
+        }
+
+        public bool UseFertilizer()
+        {
+            var fertilizer = Inventory.FirstOrDefault(i => i.IsFertilizer);
+            if (fertilizer != null)
+            {
+                Inventory.Remove(fertilizer);
+                OnPropertyChanged(nameof(Inventory));
+                return true;
+            }
+            return false;
+        }
+
+        public bool UsePestControl()
+        {
+            var pestControl = Inventory.FirstOrDefault(i => i.IsPestControl);
+            if (pestControl != null)
+            {
+                Inventory.Remove(pestControl);
+                OnPropertyChanged(nameof(Inventory));
+                return true;
+            }
+            return false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

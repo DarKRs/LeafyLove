@@ -12,7 +12,9 @@ namespace LeafyLove.Models
         public int Price { get; set; }
         public string ImagePath { get; set; }
         public bool IsPlant { get; set; }
-        public Type PlantType { get; set; } 
+        public Type PlantType { get; set; }
+        public bool IsFertilizer { get; set; }
+        public bool IsPestControl { get; set; }
     }
 
 

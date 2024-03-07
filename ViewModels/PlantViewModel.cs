@@ -69,7 +69,7 @@ namespace LeafyLove.ViewModels
         public ICommand SellPlantCommand { get; private set; }
         public PlantViewModel(User user)
         {
-            User = user;
+            this.User = user;
             SelectedPlant = User.Plants.First();
             UpdateBackground();
 
@@ -99,7 +99,7 @@ namespace LeafyLove.ViewModels
             //Таймер фона
             backgroundUpdateTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromHours(1) // Обновление каждую минуту
+                Interval = TimeSpan.FromHours(1) 
             };
             backgroundUpdateTimer.Tick += (s, e) => UpdateBackground();
             backgroundUpdateTimer.Start();
@@ -145,22 +145,28 @@ namespace LeafyLove.ViewModels
 
         private bool CanFertilizePlant()
         {
-            return SelectedPlant != null;
+            return SelectedPlant != null && this.User.Inventory.Any(i => i.IsFertilizer);
         }
 
         private void FertilizePlant()
         {
-            SelectedPlant?.Fertilize();
+            if (SelectedPlant != null && this.User.UseFertilizer())
+            {
+                SelectedPlant.Fertilize(); // Удобряем выбранное растение
+            }
         }
 
         private bool CanTreatPlant()
         {
-            return SelectedPlant != null && SelectedPlant.HasPests;
+            return SelectedPlant != null && SelectedPlant.HasPests && this.User.Inventory.Any(i => i.IsPestControl);
         }
 
         private void TreatPlant()
         {
-            SelectedPlant?.RemovePests();
+            if (SelectedPlant != null && this.User.UsePestControl())
+            {
+                SelectedPlant.RemovePests(); // Применяем средство против вредителей
+            }
         }
 
         private void UpdateBackground()

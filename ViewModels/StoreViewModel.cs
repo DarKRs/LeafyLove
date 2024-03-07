@@ -94,13 +94,15 @@ namespace LeafyLove.ViewModels
                 {
                     Name = "Удобрение",
                     Price = 50,
-                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Fertilizer.png"
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Fertilizer.png",
+                    IsFertilizer = true,
                 },
                 new StoreItem
                 {
                     Name = "Средство от вредителей",
                     Price = 50,
-                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/PestDestroyer.png"
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/PestDestroyer.png",
+                    IsPestControl = true,
                 }
             };
 
@@ -111,20 +113,24 @@ namespace LeafyLove.ViewModels
         // Реализация методов
         private void ExecutePurchase(object parameter)
         {
-            if (parameter is StoreItem item && item.IsPlant)
+            if (parameter is StoreItem item)
             {
-                if (MainUser.Money >= item.Price)
+                if (MainUser.Money >= item.Price && (item.IsFertilizer || item.IsPestControl))
+                {
+                    MainUser.Money -= item.Price;
+                    MainUser.AddToInventory(item); // Добавляем удобрение в инвентарь пользователя
+                    OnPropertyChanged(nameof(MainUser.Money));
+                    OnPropertyChanged(nameof(MainUser.Inventory));
+                }
+                else if (_user.Money >= item.Price && item.IsPlant)
                 {
                     MainUser.Money -= item.Price;
 
                     var plant = (Plant)Activator.CreateInstance(item.PlantType, new object[] { item.Name });
                     MainUser.Plants.Add(plant);
                 }
-                else
-                {
-                    // Сообщаем, что недостаточно средств
-                }
             }
+
         }
 
         private bool CanExecutePurchase(object parameter)
