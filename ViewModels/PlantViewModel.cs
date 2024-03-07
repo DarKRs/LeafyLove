@@ -70,9 +70,6 @@ namespace LeafyLove.ViewModels
         public PlantViewModel(User user)
         {
             User = user;
-            User.AddPlant(new Plant(user.FirstPlantName));
-            User.AddPlant(new Rose("Тест2"));
-            User.AddPlant(new Tulip("Тест3"));
             SelectedPlant = User.Plants.First();
             UpdateBackground();
 

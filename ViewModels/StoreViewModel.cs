@@ -70,6 +70,14 @@ namespace LeafyLove.ViewModels
                     IsPlant = true,
                     PlantType = typeof(Gypsophila)
                 },
+                new StoreItem
+                {
+                    Name = "Лего цветок",
+                    Price = 75,
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Lego/LegoMature.png",
+                    IsPlant = true,
+                    PlantType = typeof(LegoPlant)
+                },
             };
 
             ToolItems = new ObservableCollection<StoreItem>

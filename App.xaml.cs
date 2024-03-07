@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using LeafyLove.Models;
+using System.Text.Json;
+using System.IO;
 
 namespace LeafyLove
 {
@@ -18,6 +20,8 @@ namespace LeafyLove
     /// </summary>
     public partial class App : Application
     {
+        private User mainUser;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -41,11 +45,39 @@ namespace LeafyLove
             }
 
             string plantName = Settings.Default.PlantName;
-            User mainUser = new User(plantName);
+            mainUser = LoadUserData() ?? new User(plantName);
             var mainWindow = new MainWindow(mainUser);
 
             this.ShutdownMode = ShutdownMode.OnLastWindowClose;
             mainWindow.Show();
+        }
+
+        public void SaveUserData(User user)
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(user, options);
+            File.WriteAllText("user_data.json", json);
+        }
+
+        public User LoadUserData()
+        {
+            if (File.Exists("user_data.json"))
+            {
+                string json = File.ReadAllText("user_data.json");
+                var options = new JsonSerializerOptions
+                {
+                    IncludeFields = true,
+                    WriteIndented = true
+                };
+                return JsonSerializer.Deserialize<User>(json,options);
+            }
+            return null; // или создать нового пользователя, если файл не найден
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            SaveUserData(mainUser); // Убедитесь, что у вас есть доступ к текущему пользователю
         }
     }
 }

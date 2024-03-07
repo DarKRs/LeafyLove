@@ -28,17 +28,26 @@ namespace LeafyLove.Models
             }
         }
 
-        public ObservableCollection<Plant> Plants { get; private set; }
-        public List<StoreItem> Inventory { get; private set; }
+        // Убедитесь, что для всех коллекций установлены публичные сеттеры
+        public ObservableCollection<Plant> Plants { get; set; }
+        public List<StoreItem> Inventory { get; set; }
         public string FirstPlantName { get; set; }
 
-        public User(string plantName)
+        // Добавьте конструктор без параметров
+        public User()
+        {
+            // Инициализируйте коллекции здесь, чтобы избежать NullReferenceException при десериализации
+            Plants = new ObservableCollection<Plant>();
+            Inventory = new List<StoreItem>();
+        }
+
+        // Оставьте параметризованный конструктор, если он вам нужен для других целей
+        public User(string plantName) : this() // Вызовите конструктор без параметров для инициализации коллекций
         {
             Name = "test";
             Money = 500; // Начальное количество денег
-            Plants = new ObservableCollection<Plant>();
-            Inventory = new List<StoreItem>();
             FirstPlantName = plantName;
+            this.AddPlant(new Plant(plantName));
         }
 
         public void AddPlant(Plant plant)
