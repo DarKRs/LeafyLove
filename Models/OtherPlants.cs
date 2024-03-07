@@ -27,6 +27,22 @@ namespace LeafyLove.Models
                 }
             }
         }
+
+        public override int Price
+        {
+            get
+            {
+                switch (Stage)
+                {
+                    case "Seed": return 40;
+                    case "Sprout": return 80;
+                    case "Mature": return 120;
+                    default: return 0;
+                }
+            }
+        }
+
+
     }
 
     public class Tulip : Plant
@@ -46,6 +62,20 @@ namespace LeafyLove.Models
                     case "Sprout": return $"{basePath}Sprout.png";
                     case "Mature": return $"{basePath}Mature.png";
                     default: return null;
+                }
+            }
+        }
+
+        public override int Price
+        {
+            get
+            {
+                switch (Stage)
+                {
+                    case "Seed": return 40;
+                    case "Sprout": return 80;
+                    case "Mature": return 120;
+                    default: return 0;
                 }
             }
         }
@@ -71,6 +101,20 @@ namespace LeafyLove.Models
                 }
             }
         }
+
+        public override int Price
+        {
+            get
+            {
+                switch (Stage)
+                {
+                    case "Seed": return 60;
+                    case "Sprout": return 120;
+                    case "Mature": return 180;
+                    default: return 0;
+                }
+            }
+        }
     }
 
     public class LegoPlant : Plant
@@ -93,6 +137,20 @@ namespace LeafyLove.Models
                 }
             }
         }
+
+        public override int Price
+        {
+            get
+            {
+                switch (Stage)
+                {
+                    case "Seed": return 50;
+                    case "Sprout": return 100;
+                    case "Mature": return 200;
+                    default: return 0;
+                }
+            }
+        }
     }
 
     public class Lilies : Plant
@@ -112,6 +170,20 @@ namespace LeafyLove.Models
                     case "Sprout": return $"{basePath}Sprout.png";
                     case "Mature": return $"{basePath}Mature.png";
                     default: return null;
+                }
+            }
+        }
+
+        public override int Price
+        {
+            get
+            {
+                switch (Stage)
+                {
+                    case "Seed": return 40;
+                    case "Sprout": return 80;
+                    case "Mature": return 120;
+                    default: return 0;
                 }
             }
         }

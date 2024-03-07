@@ -94,7 +94,13 @@ namespace LeafyLove.ViewModels
                 {
                     Name = "Удобрение",
                     Price = 50,
-                    ImagePath = "pack://application:,,,/Images/Fertilizer.png"
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Fertilizer.png"
+                },
+                new StoreItem
+                {
+                    Name = "Средство от вредителей",
+                    Price = 50,
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/PestDestroyer.png"
                 }
             };
 

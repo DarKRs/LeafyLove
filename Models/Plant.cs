@@ -30,6 +30,21 @@ namespace LeafyLove.Domain.Models
                 }
             }
         }
+
+        public virtual int Price
+        {
+            get
+            {
+                switch (Stage)
+                {
+                    case "Seed": return 20;
+                    case "Sprout": return 40;
+                    case "Mature": return 60;
+                    default: return 0;
+                }
+            }
+        }
+
         public double Height
         {
             get => height;
@@ -166,6 +181,7 @@ namespace LeafyLove.Domain.Models
             {
                 OnPropertyChanged(nameof(Stage));
                 OnPropertyChanged(nameof(ImagePath));
+                OnPropertyChanged(nameof(Price));
             }
         }
 

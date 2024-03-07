@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -65,8 +66,7 @@ namespace LeafyLove.ViewModels
         public ICommand WaterCommand { get; private set; }
         public ICommand FertilizeCommand { get; private set; }
         public ICommand TreatCommand { get; private set; }
-        public ICommand OpenStoreCommand { get; private set; }
-
+        public ICommand SellPlantCommand { get; private set; }
         public PlantViewModel(User user)
         {
             User = user;
@@ -77,6 +77,7 @@ namespace LeafyLove.ViewModels
             WaterCommand = new RelayCommand(_ => WaterPlant(), _ => canWater);
             FertilizeCommand = new RelayCommand(_ => FertilizePlant(), _ => CanFertilizePlant());
             TreatCommand = new RelayCommand(_ => TreatPlant(), _ => CanTreatPlant());
+            SellPlantCommand = new RelayCommand(PlantSellExecute, CanSellPlantExecute);
 
             // Настройка таймера для роста растения
             growthTimer = new DispatcherTimer();
@@ -165,6 +166,28 @@ namespace LeafyLove.ViewModels
         private void UpdateBackground()
         {
             CurrentBackground = converter.Convert(null, null, null, null) as string;
+        }
+
+        private bool CanSellPlantExecute(object parameter)
+        {
+            return parameter is Plant; // Проверка, что параметр - это растение
+        }
+
+        private void PlantSellExecute(object parameter)
+        {
+            if (parameter is Plant plant)
+            {
+                MessageBoxResult result = MessageBox.Show($"Вы уверены, что хотите продать {plant.Name}?", "Подтверждение продажи", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    User.Money += plant.Price; // Увеличение баланса пользователя на стоимость растения
+                    User.Plants.Remove(plant); // Удаление растения из списка
+
+                    OnPropertyChanged(nameof(User.Money));
+                    OnPropertyChanged(nameof(User.Plants));
+                }
+            }
         }
 
         protected void OnPropertyChanged(string name)
