@@ -178,5 +178,9 @@
     <Resource Include="Resources\Images\Plants\Lilies\LiliesSeed.png" />
     <Resource Include="Resources\Images\Plants\Lilies\LiliesSprout.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Fertilizer.png" />
+    <Resource Include="Resources\Images\PestDestroyer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
