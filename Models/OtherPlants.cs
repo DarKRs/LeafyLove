@@ -95,4 +95,26 @@ namespace LeafyLove.Models
         }
     }
 
+    public class Lilies : Plant
+    {
+        public Lilies(string name) : base(name)
+        {
+        }
+
+        public override string ImagePath
+        {
+            get
+            {
+                string basePath = "pack://application:,,,/Resources/Images/Plants/Lilies/Lilies";
+                switch (Stage)
+                {
+                    case "Seed": return $"{basePath}Seed.png";
+                    case "Sprout": return $"{basePath}Sprout.png";
+                    case "Mature": return $"{basePath}Mature.png";
+                    default: return null;
+                }
+            }
+        }
+    }
+
 }
