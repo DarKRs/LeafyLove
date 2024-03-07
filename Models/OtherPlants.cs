@@ -73,5 +73,26 @@ namespace LeafyLove.Models
         }
     }
 
+    public class LegoPlant : Plant
+    {
+        public LegoPlant(string name) : base(name)
+        {
+        }
+
+        public override string ImagePath
+        {
+            get
+            {
+                string basePath = "pack://application:,,,/Resources/Images/Plants/Lego/Lego";
+                switch (Stage)
+                {
+                    case "Seed": return $"{basePath}Seed.png";
+                    case "Sprout": return $"{basePath}Sprout.png";
+                    case "Mature": return $"{basePath}Mature.png";
+                    default: return null;
+                }
+            }
+        }
+    }
 
 }
