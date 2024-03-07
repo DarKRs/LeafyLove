@@ -1,4 +1,5 @@
 ﻿using LeafyLove.Domain.Models;
+using LeafyLove.Models;
 using LeafyLove.Utilities;
 using LeafyLove.ViewModels;
 using System;
@@ -25,12 +26,16 @@ namespace LeafyLove
     public partial class MainWindow : Window
     {
         private DispatcherTimer backgroundUpdateTimer;
-        
 
-
-        public MainWindow()
+        public MainWindow(User user)
         {
             InitializeComponent();
+
+            var plantViewModel = new PlantViewModel(user);
+            this.DataContext = plantViewModel;
+
+            var storeViewModel = new StoreViewModel(user);
+            StoreTab.DataContext = storeViewModel;
 
         }
 

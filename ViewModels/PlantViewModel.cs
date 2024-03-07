@@ -67,17 +67,12 @@ namespace LeafyLove.ViewModels
         public ICommand TreatCommand { get; private set; }
         public ICommand OpenStoreCommand { get; private set; }
 
-        public PlantViewModel(string plantName)
+        public PlantViewModel(User user)
         {
-            User = new User("Имя пользователя"); // Инициализируйте пользователя здесь
-            User.AddPlant(new Plant(plantName));
-            User.AddPlant(new Plant("Тест2"));
-            User.AddPlant(new Plant("Тест3"));
-            User.AddPlant(new Plant(plantName));
-            User.AddPlant(new Plant(plantName));
-            User.AddPlant(new Plant(plantName));
-            User.AddPlant(new Plant(plantName));
-            User.AddPlant(new Plant(plantName));
+            User = user;
+            User.AddPlant(new Plant(user.FirstPlantName));
+            User.AddPlant(new Rose("Тест2"));
+            User.AddPlant(new Tulip("Тест3"));
             SelectedPlant = User.Plants.First();
             UpdateBackground();
 

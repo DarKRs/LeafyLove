@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using LeafyLove.Models;
 
 namespace LeafyLove
 {
@@ -40,8 +41,8 @@ namespace LeafyLove
             }
 
             string plantName = Settings.Default.PlantName;
-            var viewModel = new PlantViewModel(plantName);
-            var mainWindow = new MainWindow { DataContext = viewModel };
+            User mainUser = new User(plantName);
+            var mainWindow = new MainWindow(mainUser);
 
             this.ShutdownMode = ShutdownMode.OnLastWindowClose;
             mainWindow.Show();
