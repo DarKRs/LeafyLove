@@ -56,7 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Achievement.cs" />
-    <Compile Include="Models\Store.cs" />
+    <Compile Include="Models\OtherPlants.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\TimeOfDayToBackgroundConverter.cs" />
@@ -121,6 +121,21 @@
     <Resource Include="Resources\Images\Plants\Mature.png" />
     <Resource Include="Resources\Images\Plants\Seed.png" />
     <Resource Include="Resources\Images\Plants\Sprout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Plants\Rose\RoseMature.png" />
+    <Resource Include="Resources\Images\Plants\Rose\RoseSeed.png" />
+    <Resource Include="Resources\Images\Plants\Rose\RoseSprout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Plants\Tulip\TulipMature.png" />
+    <Resource Include="Resources\Images\Plants\Tulip\TulipSeed.png" />
+    <Resource Include="Resources\Images\Plants\Tulip\TulipSprout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Plants\Gypsophila\GypsophilaMature.png" />
+    <Resource Include="Resources\Images\Plants\Gypsophila\GypsophilaSeed.png" />
+    <Resource Include="Resources\Images\Plants\Gypsophila\GypsophilaSprout.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

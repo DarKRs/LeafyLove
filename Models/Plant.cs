@@ -16,7 +16,20 @@ namespace LeafyLove.Domain.Models
         private double waterLevel;
 
         public string Name { get; set; }
-
+        public virtual string ImagePath
+        {
+            get
+            {
+                string basePath = "pack://application:,,,/Resources/Images/Plants/";
+                switch (Stage)
+                {
+                    case "Seed": return $"{basePath}Seed.png";
+                    case "Sprout": return $"{basePath}Sprout.png";
+                    case "Mature": return $"{basePath}Mature.png";
+                    default: return null;
+                }
+            }
+        }
         public double Height
         {
             get => height;
@@ -135,7 +148,7 @@ namespace LeafyLove.Domain.Models
 
         private void UpdateStage()
         {
-            // Простая логика изменения стадий, можно усложнить в зависимости от требований
+            string oldStage = Stage;
             if (Height < 5)
             {
                 Stage = "Seed";
@@ -147,6 +160,12 @@ namespace LeafyLove.Domain.Models
             else
             {
                 Stage = "Mature";
+            }
+
+            if (oldStage != Stage)
+            {
+                OnPropertyChanged(nameof(Stage));
+                OnPropertyChanged(nameof(ImagePath));
             }
         }
 
