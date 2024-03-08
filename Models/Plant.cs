@@ -37,9 +37,9 @@ namespace LeafyLove.Domain.Models
             {
                 switch (Stage)
                 {
-                    case "Seed": return 20;
-                    case "Sprout": return 40;
-                    case "Mature": return 60;
+                    case "Seed": return 5;
+                    case "Sprout": return 15;
+                    case "Mature": return 25;
                     default: return 0;
                 }
             }
@@ -96,13 +96,14 @@ namespace LeafyLove.Domain.Models
             }
         }
 
-        // Константы для настройки роста и здоровья
-        private const double GrowthRate = 0.5; // Скорость роста за день без удобрения
-        private const int MaxHealth = 100;
-        private const int MaxWaterLevel = 200;
-        private const double WaterDicreaseRate = 1.7;
-        private const int PestsDamage = 10; // Ущерб от вредителей
-        private const int DroughtDamage = 5;
+        // Переменные для настройки роста и здоровья
+        protected virtual double GrowthRate => 0.5;
+        protected virtual int MaxHealth => 100;
+        protected virtual int MaxWaterLevel => 200;
+        protected virtual double WaterDecreaseRate => 1.7;
+        protected virtual int PestsDamage => 5;
+        protected virtual int DroughtDamage => 5;
+
 
         public Plant(string name)
         {
@@ -114,30 +115,30 @@ namespace LeafyLove.Domain.Models
             WaterLevel = 30;
         }
 
-        public void Water()
+        public void Water(int multiplier)
         {
-            WaterLevel = Math.Min(WaterLevel + 15, MaxWaterLevel);
+            WaterLevel = Math.Min(WaterLevel + (10*multiplier), MaxWaterLevel);
         }
 
         public void Fertilize()
         {
             // Удобрение ускоряет рост
-            Grow(GrowthRate * 2); // Удвоенный рост при удобрении
+            Grow(GrowthRate * 2); 
         }
 
-        public void Grow(double growthAmount = GrowthRate)
+        public void Grow(double multiply = 1)
         {
             // Растение растет только если его здоровье выше 50%
             if (Health > 50 && WaterLevel < 150)
             {
-                Height += growthAmount;
-                UpdateStage(); // Обновляем стадию роста в зависимости от высоты
+                Height += GrowthRate * multiply;
+                UpdateStage();
             }
         }
 
         public void Tick(int multiply = 1)
         {
-            WaterLevel -= WaterDicreaseRate * multiply;
+            WaterLevel = Math.Max(WaterLevel - (WaterDecreaseRate * multiply),0);
             if (WaterLevel < 10)
             {
                 Health = Math.Max(Health - DroughtDamage, 0);
