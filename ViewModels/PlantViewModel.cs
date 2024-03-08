@@ -26,14 +26,14 @@ namespace LeafyLove.ViewModels
 
         Random random = new Random();
 
-        private User user;
-        public User User
+        private User mainUser;
+        public User MainUser
         {
-            get { return user; }
+            get { return mainUser; }
             set
             {
-                user = value;
-                OnPropertyChanged(nameof(User));
+                mainUser = value;
+                OnPropertyChanged(nameof(MainUser));
             }
         }
 
@@ -69,8 +69,8 @@ namespace LeafyLove.ViewModels
         public ICommand SellPlantCommand { get; private set; }
         public PlantViewModel(User user)
         {
-            this.User = user;
-            SelectedPlant = User.Plants.First();
+            this.MainUser = user;
+            SelectedPlant = MainUser.Plants.First();
             UpdateBackground();
 
             // Инициализация команд
@@ -81,13 +81,13 @@ namespace LeafyLove.ViewModels
 
             // Настройка таймера для роста растения
             growthTimer = new DispatcherTimer();
-            growthTimer.Interval = TimeSpan.FromSeconds(1);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
+            growthTimer.Interval = TimeSpan.FromSeconds(1);//TimeSpan.FromHours(1);
             growthTimer.Tick += GrowthTimer_Tick;
             growthTimer.Start();
 
             // Настройка таймера для тика растения
             tickTimer = new DispatcherTimer();
-            tickTimer.Interval = TimeSpan.FromSeconds(10);//TimeSpan.FromHours(1); // Установите интервал в соответствии с желаемой скоростью роста
+            tickTimer.Interval = TimeSpan.FromSeconds(1);//TimeSpan.FromHours(1);
             tickTimer.Tick += TickTimer_Tick;
             tickTimer.Start();
 
@@ -107,21 +107,21 @@ namespace LeafyLove.ViewModels
 
         private void GrowthTimer_Tick(object sender, EventArgs e)
         {
-            foreach (var plant in User.Plants)
+            foreach (var plant in MainUser.Plants)
             {
                 plant.Grow();
-                plant.CheckPests(random.Next(100) < 5);
+                plant.CheckPests(random.Next(100) < 3);
             }
-            OnPropertyChanged(nameof(User.Plants));
+            OnPropertyChanged(nameof(MainUser.Plants));
         }
 
         private void TickTimer_Tick(object sender, EventArgs e)
         {
-            foreach (var plant in User.Plants)
+            foreach (var plant in MainUser.Plants)
             {
-                plant.Tick(random.Next(10)); 
+                plant.Tick(random.Next(5)); 
             }
-            OnPropertyChanged(nameof(User.Plants));
+            OnPropertyChanged(nameof(MainUser.Plants));
         }
 
         private void WaterTimer_Tick(object sender, EventArgs e)
@@ -146,12 +146,12 @@ namespace LeafyLove.ViewModels
 
         private bool CanFertilizePlant()
         {
-            return SelectedPlant != null && this.User.Inventory.Any(i => i.IsFertilizer);
+            return SelectedPlant != null && this.MainUser.Inventory.Any(i => i.IsFertilizer);
         }
 
         private void FertilizePlant()
         {
-            if (SelectedPlant != null && this.User.UseFertilizer())
+            if (SelectedPlant != null && this.MainUser.UseFertilizer())
             {
                 SelectedPlant.Fertilize(); // Удобряем выбранное растение
             }
@@ -159,12 +159,12 @@ namespace LeafyLove.ViewModels
 
         private bool CanTreatPlant()
         {
-            return SelectedPlant != null && SelectedPlant.HasPests && this.User.Inventory.Any(i => i.IsPestControl);
+            return SelectedPlant != null && SelectedPlant.HasPests && this.MainUser.Inventory.Any(i => i.IsPestControl);
         }
 
         private void TreatPlant()
         {
-            if (SelectedPlant != null && this.User.UsePestControl())
+            if (SelectedPlant != null && this.MainUser.UsePestControl())
             {
                 SelectedPlant.RemovePests(); // Применяем средство против вредителей
             }
@@ -188,11 +188,11 @@ namespace LeafyLove.ViewModels
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    User.Money += plant.Price; // Увеличение баланса пользователя на стоимость растения
-                    User.Plants.Remove(plant); // Удаление растения из списка
+                    MainUser.Money += plant.Price; // Увеличение баланса пользователя на стоимость растения
+                    MainUser.Plants.Remove(plant); // Удаление растения из списка
 
-                    OnPropertyChanged(nameof(User.Money));
-                    OnPropertyChanged(nameof(User.Plants));
+                    OnPropertyChanged(nameof(MainUser.Money));
+                    OnPropertyChanged(nameof(MainUser.Plants));
                 }
             }
         }
