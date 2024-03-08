@@ -27,6 +27,9 @@ namespace LeafyLove.ViewModels
                 }
             }
         }
+
+        private int waterUpgradeMultiplier = 1;
+
         public ObservableCollection<StoreItem> FlowerItems { get; set; }
         public ObservableCollection<StoreItem> ToolItems { get; set; }
 
@@ -41,31 +44,47 @@ namespace LeafyLove.ViewModels
                 new StoreItem
                 {
                     Name = "Цветок",
-                    Price = 50,
+                    Price = 20,
                     ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Mature.png",
                     IsPlant = true,
                     PlantType = typeof(Plant)
                 },
                 new StoreItem
                 {
-                    Name = "Роза",
-                    Price = 100,
-                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Rose/RoseMature.png",
+                    Name = "Гвоздики",
+                    Price = 30,
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Cloves/ClovesMature.png",
                     IsPlant = true,
-                    PlantType = typeof(Rose)
+                    PlantType = typeof(Cloves)
                 },
                 new StoreItem
                 {
                     Name = "Тюльпан",
-                    Price = 75,
+                    Price = 45,
                     ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Tulip/TulipMature.png",
                     IsPlant = true,
                     PlantType = typeof(Tulip)
                 },
                 new StoreItem
                 {
+                    Name = "Роза",
+                    Price = 80,
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Rose/RoseMature.png",
+                    IsPlant = true,
+                    PlantType = typeof(Rose)
+                },
+                new StoreItem
+                {
+                    Name = "Лилии",
+                    Price = 115,
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Lilies/LiliesMature.png",
+                    IsPlant = true,
+                    PlantType = typeof(Lilies)
+                },
+                new StoreItem
+                {
                     Name = "Гипсофилы",
-                    Price = 75,
+                    Price = 150,
                     ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Gypsophila/GypsophilaMature.png",
                     IsPlant = true,
                     PlantType = typeof(Gypsophila)
@@ -73,23 +92,22 @@ namespace LeafyLove.ViewModels
                 new StoreItem
                 {
                     Name = "Лего цветок",
-                    Price = 75,
+                    Price = 200,
                     ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Lego/LegoMature.png",
                     IsPlant = true,
                     PlantType = typeof(LegoPlant)
-                },
-                new StoreItem
-                {
-                    Name = "Лилии",
-                    Price = 75,
-                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/Plants/Lilies/LiliesMature.png",
-                    IsPlant = true,
-                    PlantType = typeof(Lilies)
                 },
             };
 
             ToolItems = new ObservableCollection<StoreItem>
             {
+                new StoreItem
+                {
+                    Name = "Улучшение лейки",
+                    Price = 20 * waterUpgradeMultiplier,
+                    ImagePath = "pack://application:,,,/LeafyLove;component/Resources/Images/WaterUpgrade.png",
+                    IsWaterUpgrade = true,
+                },
                 new StoreItem
                 {
                     Name = "Удобрение",
@@ -121,6 +139,15 @@ namespace LeafyLove.ViewModels
                     MainUser.AddToInventory(item); // Добавляем удобрение в инвентарь пользователя
                     OnPropertyChanged(nameof(MainUser.Money));
                     OnPropertyChanged(nameof(MainUser.Inventory));
+                }
+                else if (MainUser.Money >= item.Price && item.IsWaterUpgrade)
+                {
+                    MainUser.Money -= item.Price;
+                    MainUser.WaterMultiplier += 1;
+                    waterUpgradeMultiplier += MainUser.WaterMultiplier;
+                    ToolItems[0].Price = 20 * waterUpgradeMultiplier;
+                    OnPropertyChanged(nameof(ToolItems));
+                    OnPropertyChanged(nameof(MainUser.Money));
                 }
                 else if (_user.Money >= item.Price && item.IsPlant)
                 {

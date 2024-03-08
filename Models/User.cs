@@ -28,6 +28,8 @@ namespace LeafyLove.Models
             }
         }
 
+        public int WaterMultiplier = 1;
+
         public ObservableCollection<Plant> Plants { get; set; }
         public ObservableCollection<StoreItem> Inventory { get; private set; }
         public string FirstPlantName { get; set; }
@@ -42,7 +44,7 @@ namespace LeafyLove.Models
         public User(string plantName) : this() 
         {
             Name = "test";
-            Money = 500; // Начальное количество денег
+            Money = 50; // Начальное количество денег
             FirstPlantName = plantName;
             this.AddPlant(new Plant(plantName));
         }

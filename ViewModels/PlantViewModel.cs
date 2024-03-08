@@ -136,11 +136,12 @@ namespace LeafyLove.ViewModels
         {
             if (SelectedPlant != null)
             {
-                SelectedPlant.Water();
+                SelectedPlant.Water(mainUser.WaterMultiplier);
                 canWater = false;
                 waterTimer.Start();
                 CommandManager.InvalidateRequerySuggested();
             }
+            this.MainUser.Money += 5;
         }
 
         private bool CanFertilizePlant()

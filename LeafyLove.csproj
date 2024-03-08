@@ -183,5 +183,13 @@
     <Resource Include="Resources\Images\Fertilizer.png" />
     <Resource Include="Resources\Images\PestDestroyer.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Plants\Cloves\ClovesMature.png" />
+    <Resource Include="Resources\Images\Plants\Cloves\ClovesSeed.png" />
+    <Resource Include="Resources\Images\Plants\Cloves\ClovesSprout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\WaterUpgrade.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
